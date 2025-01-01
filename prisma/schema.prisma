@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model Product {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  slug        String   @unique(map: "product_slug_idx")
+  category    String
+  description String
+  images      String[]
+  price       Decimal  @default(0) @db.Decimal(12, 2)
+  brand       String
+  rating      Decimal  @default(0) @db.Decimal(3, 2)
+  numReviews  Int      @default(0)
+  stock       Int
+  isFeatured  Boolean  @default(false)
+  banner      String?
+  createdAt   DateTime @default(now()) @db.Timestamp(6)
+}
+
+//1. prisma init   which create a folder in root with schema.prisma file
+//2. prisma generate   which create a node_modules folder with prisma-client-js
+//3. prisma migrate dev --name init   which create a migration folder with sql file
+//4. create seet.ts in db folder
+//5. npx tsx db/seed.ts   which seed the data in database
