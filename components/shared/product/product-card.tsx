@@ -1,9 +1,9 @@
 import React from 'react';
-import {Product} from '@/lib/types'
+import {Product } from '@/types'
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
-import ProductPrice from "@/components/shared/header/product/product-price";
+import ProductPrice from "@/components/shared/product/product-price";
 
 function ProductCard({product}: { product: Product }) {
     return (
