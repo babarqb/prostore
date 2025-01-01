@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "@/components/shared/header";
+import Footer from "@/components/footer";
 export default function RootLayout({children,}: Readonly<{
     children: React.ReactNode;
 }>) {
@@ -9,6 +10,7 @@ export default function RootLayout({children,}: Readonly<{
            <main className="flex-1 wrapper">
                {children}
            </main>
+            <Footer/>
         </div>
     );
 }

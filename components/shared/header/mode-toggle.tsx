@@ -16,26 +16,19 @@ const ModeToggle = () => {
     const {theme, setTheme} = useTheme();
     useEffect(() => setMounted(true), []);
     if (!mounted) return null;
-
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant={`ghost`} className={`focus-visible:ring-0 focus-visible:ring-offset-0`}>
-                    {/*{theme === 'dark' ? '🌙' : '☀️'}*/}
-                    {
-                        theme === 'system' ? (
-                                <SunMoonIcon/>
-                            ) :
-                            theme === 'dark' ? (
-                                <MoonIcon/>
-                            ) : (
-                                <SunIcon/>
-                            )}
+                    {theme === 'system' ? (<SunMoonIcon/>) :
+                        theme === 'dark' ? (<MoonIcon/>) : (<SunIcon/>)}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+
                 <DropdownMenuSeparator/>
+
                 <DropdownMenuCheckboxItem
                     checked={theme === 'system'}
                     onClick={() => setTheme('system')}>
@@ -45,14 +38,14 @@ const ModeToggle = () => {
                 <DropdownMenuCheckboxItem
                     checked={theme === 'dark'}
                     onClick={() => setTheme('dark')}>
-                    <SunMoonIcon/>Dark
+                    <MoonIcon/>Dark
                 </DropdownMenuCheckboxItem>
+
                 <DropdownMenuCheckboxItem
                     checked={theme === 'light'}
                     onClick={() => setTheme('light')}>
-                    <SunMoonIcon/>Light
+                    <SunIcon/>Light
                 </DropdownMenuCheckboxItem>
-
 
             </DropdownMenuContent>
         </DropdownMenu>
