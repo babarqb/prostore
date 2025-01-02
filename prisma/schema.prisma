@@ -10,6 +10,58 @@ datasource db {
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
+model User {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String    @default("No_NAME")
+  email         String    @unique(map: "user_email_idx")
+  emailVerified DateTime? @db.Timestamp(6)
+  image         String?
+  password      String?
+  role          String    @default("user")
+  address       Json?     @db.Json
+  pyamentMethod String?
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime  @updatedAt
+  Account       Account[]
+  Session       Session[]
+}
+
+model Account {
+  userId            String   @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId]) // composite primary key
+}
+
+model Session {
+  sessionToken String   @id
+  userId       String   @db.Uuid
+  expires      DateTime @db.Timestamp(6)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime @db.Timestamp(6)
+
+  @@id([identifier, token])
+}
+
 model Product {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name        String
@@ -26,9 +78,3 @@ model Product {
   banner      String?
   createdAt   DateTime @default(now()) @db.Timestamp(6)
 }
-
-//1. prisma init   which create a folder in root with schema.prisma file
-//2. prisma generate   which create a node_modules folder with prisma-client-js
-//3. prisma migrate dev --name init   which create a migration folder with sql file
-//4. create seet.ts in db folder
-//5. npx tsx db/seed.ts   which seed the data in database
